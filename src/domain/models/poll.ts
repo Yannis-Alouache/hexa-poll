@@ -37,6 +37,4 @@ export class Poll {
     static create(props: PollCreationProps): Poll {
         return new Poll(props);
     }
-
-    
 }
