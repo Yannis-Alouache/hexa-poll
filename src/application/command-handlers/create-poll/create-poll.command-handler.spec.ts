@@ -1,24 +1,27 @@
-import { CreatePollCommand } from "src/domain/ports/in/commands/create-poll.command";
+import { CreatePollCommand } from "../../../domain/ports/in/commands/create-poll.command";
 import { CreatePollCommandHandler } from "./create-poll.command-handler";
-import { InMemoryPollRepository } from "src/infrastructure/repositories/poll/in-memory-poll-repository";
+import { InMemoryPollRepository } from "../../../infrastructure/adapters/repositories/poll/in-memory-poll-repository";
+import { InMemoryIdGenerator } from "../../../infrastructure/adapters/id-generator/in-memory-id-generator";
 
 
 
 describe('Create A Poll', () => {
     let pollRepository: InMemoryPollRepository;
+    let idGenerator: InMemoryIdGenerator;
 
     beforeEach(() => {
         pollRepository = new InMemoryPollRepository();
+        idGenerator = new InMemoryIdGenerator();
     })
 
     async function execute(command: CreatePollCommand): Promise<string> {
-        return new CreatePollCommandHandler().execute(command);
+        const commandHandler = new CreatePollCommandHandler(pollRepository, idGenerator);
+        return commandHandler.execute(command);
     }
-
 
     const command = new CreatePollCommand(
         "What is your favorite color ?",
-        [{id: "123", title: "Red"}, {id: "124", title: "Blue"}]
+        [{ title: "Red" }, { title: "Blue" }]
     );
 
 
@@ -27,15 +30,15 @@ describe('Create A Poll', () => {
 
 
         const expectedPoll = {
-            id: "123",
+            id: "1",
             question: "What is your favorite color ?",
             options: [
                 {
-                    id: "123",
+                    id: "1",
                     title: "Red"
                 },
                 {
-                    id: "124",
+                    id: "1",
                     title: "Blue"
                 }
             ]

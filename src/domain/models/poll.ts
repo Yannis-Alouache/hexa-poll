@@ -1,4 +1,4 @@
-import { Option } from "./option";
+import { Option, OptionCreationProps } from "./option";
 
 
 // {
@@ -20,9 +20,8 @@ import { Option } from "./option";
 export interface PollCreationProps {
     id: string;
     question: string;
-    options: Option[];
+    options: OptionCreationProps[];
 }
-
 export class Poll {
     private id: string;
     private question: string;

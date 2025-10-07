@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "Hexa Poll",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

@@ -9,7 +9,7 @@ import { UpdatePollRequest } from "../dto/requests/update-poll.request";
 import { DeletePollRequest } from "../dto/requests/delete-poll.request";
 
 
-@Controller("polls")
+@Controller("api/polls")
 export class PollController {
     constructor(
         private commandBus: CommandBus

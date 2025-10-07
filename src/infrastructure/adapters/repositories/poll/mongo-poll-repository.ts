@@ -1,8 +1,19 @@
+import { Injectable } from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
+import { Collection, Model } from "mongoose";
 import { Poll } from "src/domain/models/poll";
 import { PollRepository } from "src/domain/ports/out/repositories/poll-repository";
+import { MongoPoll } from "src/infrastructure/schemas/poll.schema";
 
-export class InMemoryPollRepository implements PollRepository {
-    save(poll: Poll): Promise<string> {
+@Injectable()
+export class MongoPollRepository implements PollRepository {
+
+    constructor(
+        @InjectModel(MongoPoll.name)
+        private readonly pollModel: Model<MongoPoll>
+    ) {}
+
+    async save(poll: Poll): Promise<void> {
         throw new Error("Method not implemented.");
     }
     update(poll: Poll): Promise<Poll> {
