@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
-import { Poll } from "src/domain/models/poll";
+import { Poll } from "src/domain/models/poll/poll";
 import { UpdatePollCommand } from "src/domain/ports/in/commands/update-poll.command";
 import { PollEntity } from "src/infrastructure/persistence-models/poll-entity";
 

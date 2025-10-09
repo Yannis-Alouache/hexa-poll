@@ -1,4 +1,4 @@
-import { Option, OptionCreationProps } from "./option";
+import { Option, OptionCreationProps } from "../option";
 
 
 // {

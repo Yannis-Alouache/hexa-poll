@@ -1,4 +1,4 @@
-import { Poll } from "src/domain/models/poll";
+import { Poll } from "src/domain/models/poll/poll";
 import { PollRepository } from "src/domain/ports/out/repositories/poll-repository";
 
 export class InMemoryPollRepository implements PollRepository {

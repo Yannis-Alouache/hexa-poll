@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
-import { Poll } from "../../../domain/models/poll";
+import { Poll } from "../../../domain/models/poll/poll";
 import { CreatePollCommand } from "../../../domain/ports/in/commands/create-poll.command";
 import type { PollRepository } from "../../../domain/ports/out/repositories/poll-repository";
 import { Inject } from "@nestjs/common";

@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Collection, Model } from "mongoose";
-import { Poll } from "src/domain/models/poll";
+import { Poll } from "src/domain/models/poll/poll";
 import { PollRepository } from "src/domain/ports/out/repositories/poll-repository";
 import { MongoPoll } from "src/infrastructure/schemas/poll.schema";
 

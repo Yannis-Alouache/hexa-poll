@@ -1,4 +1,4 @@
-import { Poll } from "src/domain/models/poll";
+import { Poll } from "src/domain/models/poll/poll";
 import { Mapper } from "./mapper";
 
 export class PollMapper implements Mapper<Poll, Poll> {

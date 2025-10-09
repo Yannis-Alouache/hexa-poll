@@ -1,4 +1,4 @@
-import { Poll } from "src/domain/models/poll";
+import { Poll } from "src/domain/models/poll/poll";
 
 export interface PollRepository {
     save(poll: Poll): Promise<void>;
