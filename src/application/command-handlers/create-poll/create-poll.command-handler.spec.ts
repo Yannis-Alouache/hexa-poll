@@ -2,7 +2,9 @@ import { CreatePollCommand } from "../../../domain/ports/in/commands/create-poll
 import { CreatePollCommandHandler } from "./create-poll.command-handler";
 import { InMemoryPollRepository } from "../../../infrastructure/adapters/repositories/poll/in-memory-poll-repository";
 import { InMemoryIdGenerator } from "../../../infrastructure/adapters/id-generator/in-memory-id-generator";
-
+import { StartDateAfterEndDateError } from "../../../domain/errors/start-date-after-end-date.error";
+import { StartDateInThePastError } from "../../../domain/errors/start-date-in-the-past.error";
+import { Poll } from "../../../domain/models/poll/poll";
 
 
 describe('Create A Poll', () => {
@@ -19,32 +21,36 @@ describe('Create A Poll', () => {
         return commandHandler.execute(command);
     }
 
+    const tommorow = new Date(Date.now() + 24 * 60 * 60 * 1000);
+    const twoDaysFromNow = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
+    const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000);
+
     const validCommand = new CreatePollCommand(
         "What is your favorite color ?",
         [{ title: "Red" }, { title: "Blue" }],
-        new Date("2025-10-01T12:00:00.000Z"),
-        new Date("2025-10-31T12:00:00.000Z"),
+        tommorow,
+        twoDaysFromNow,
     );
 
     const startDateInThePastCommand = new CreatePollCommand(
         "What is your favorite color ?",
         [{ title: "Red" }, { title: "Blue" }],
-        new Date("2025-09-01T12:00:00.000Z"),
-        new Date("2025-10-31T12:00:00.000Z"),
+        yesterday,
+        tommorow,
     );
 
     const startDateAfterEndDateCommand = new CreatePollCommand(
         "What is your favorite color ?",
         [{ title: "Red" }, { title: "Blue" }],
-        new Date("2025-10-01T12:00:00.000Z"),
-        new Date("2025-09-31T12:00:00.000Z"),
+        tommorow,
+        yesterday,
     );
 
 
     it('creates a poll with mandatory fields', async () => {
         await execute(validCommand);
 
-        const expectedPoll = {
+        const expectedPoll = Poll.create({
             id: "1",
             question: "What is your favorite color ?",
             options: [
@@ -57,9 +63,9 @@ describe('Create A Poll', () => {
                     title: "Blue"
                 }
             ],
-            startDate: new Date("2025-10-01T12:00:00.000Z"),
-            endDate: new Date("2025-10-31T12:00:00.000Z"),
-        }
+            startDate: tommorow,
+            endDate: twoDaysFromNow,
+        });
 
         const polls = await pollRepository.findAll();
 

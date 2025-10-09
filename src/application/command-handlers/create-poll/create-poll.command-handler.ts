@@ -4,7 +4,7 @@ import { CreatePollCommand } from "../../../domain/ports/in/commands/create-poll
 import type { PollRepository } from "../../../domain/ports/out/repositories/poll-repository";
 import { Inject } from "@nestjs/common";
 import type { IdGenerator } from "../../../domain/ports/out/id-generator";
-import { Option } from "../../../domain/models/option";
+import { Option } from "../../../domain/models/poll/value-object/option";
 
 
 @CommandHandler(CreatePollCommand)

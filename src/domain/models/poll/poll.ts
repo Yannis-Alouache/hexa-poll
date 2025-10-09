@@ -1,4 +1,5 @@
-import { Option, OptionCreationProps } from "../option";
+import { Option, OptionCreationProps } from "./value-object/option";
+import { PollDates } from "./value-object/poll-date";
 
 
 // {
@@ -30,15 +31,13 @@ export class Poll {
     private id: string;
     private question: string;
     private options: Option[];
-    private startDate: Date;
-    private endDate: Date;
+    private dates: PollDates;
 
     private constructor(props: PollCreationProps) {
         this.id = props.id;
         this.question = props.question;
         this.options = props.options;
-        this.startDate = props.startDate;
-        this.endDate = props.endDate;
+        this.dates = new PollDates({ startDate: props.startDate, endDate: props.endDate });
     }
 
     static create(props: PollCreationProps): Poll {

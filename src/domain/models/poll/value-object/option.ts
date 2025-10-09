@@ -9,8 +9,8 @@ export interface OptionCreationProps {
 }
 
 export class Option {
-    id: string;
-    title: string;
+    public readonly id: string;
+    public readonly title: string;
 
     private constructor(props: OptionCreationProps) {
         this.id = props.id;
