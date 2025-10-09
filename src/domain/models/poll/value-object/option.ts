@@ -12,12 +12,8 @@ export class Option {
     public readonly id: string;
     public readonly title: string;
 
-    private constructor(props: OptionCreationProps) {
+    constructor(props: OptionCreationProps) {
         this.id = props.id;
         this.title = props.title;
-    }
-
-    static create(props: OptionCreationProps): Option {
-        return new Option(props);
     }
 }

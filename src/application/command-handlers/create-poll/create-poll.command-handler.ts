@@ -4,7 +4,6 @@ import { CreatePollCommand } from "../../../domain/ports/in/commands/create-poll
 import type { PollRepository } from "../../../domain/ports/out/repositories/poll-repository";
 import { Inject } from "@nestjs/common";
 import type { IdGenerator } from "../../../domain/ports/out/id-generator";
-import { Option } from "../../../domain/models/poll/value-object/option";
 
 
 @CommandHandler(CreatePollCommand)
@@ -19,18 +18,21 @@ export class CreatePollCommandHandler implements ICommandHandler<CreatePollComma
     ) {}
 
     async execute(command: CreatePollCommand): Promise<string> {
-        let id = this.idGenerator.generate();
+        let pollId = this.idGenerator.generate();
         
         let poll = Poll.create({
-            id: id,
+            id: pollId,
             question: command.question,
-            options: command.options.map(option => Option.create({id: this.idGenerator.generate(), title: option.title})),
+            options: command.options.map(option => ({
+                id: this.idGenerator.generate(),
+                title: option.title,
+            })),
             startDate: command.startDate,
             endDate: command.endDate,
         });
 
         await this.pollRepository.save(poll);
 
-        return id;
+        return pollId;
     }
 }

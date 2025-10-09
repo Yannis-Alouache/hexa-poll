@@ -36,7 +36,7 @@ export class Poll {
     private constructor(props: PollCreationProps) {
         this.id = props.id;
         this.question = props.question;
-        this.options = props.options;
+        this.options = props.options.map(option => new Option(option));
         this.dates = new PollDates({ startDate: props.startDate, endDate: props.endDate });
     }
 
