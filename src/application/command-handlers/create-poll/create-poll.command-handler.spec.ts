@@ -21,7 +21,9 @@ describe('Create A Poll', () => {
 
     const command = new CreatePollCommand(
         "What is your favorite color ?",
-        [{ title: "Red" }, { title: "Blue" }]
+        [{ title: "Red" }, { title: "Blue" }],
+        new Date("2025-10-01T12:00:00.000Z"),
+        new Date("2025-10-31T12:00:00.000Z"),
     );
 
 
@@ -41,7 +43,9 @@ describe('Create A Poll', () => {
                     id: "1",
                     title: "Blue"
                 }
-            ]
+            ],
+            startDate: new Date("2025-10-01T12:00:00.000Z"),
+            endDate: new Date("2025-10-31T12:00:00.000Z"),
         }
 
         const polls = await pollRepository.findAll();

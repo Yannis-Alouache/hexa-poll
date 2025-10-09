@@ -24,7 +24,9 @@ export class CreatePollCommandHandler implements ICommandHandler<CreatePollComma
         let poll = Poll.create({
             id: id,
             question: command.question,
-            options: command.options.map(option => Option.create({id: this.idGenerator.generate(), title: option.title}))
+            options: command.options.map(option => Option.create({id: this.idGenerator.generate(), title: option.title})),
+            startDate: command.startDate,
+            endDate: command.endDate,
         });
 
         await this.pollRepository.save(poll);
