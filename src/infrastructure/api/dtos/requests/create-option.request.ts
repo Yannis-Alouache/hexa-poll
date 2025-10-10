@@ -3,6 +3,7 @@
 // }
 
 import { ApiProperty } from "@nestjs/swagger";
+import { IsString } from "class-validator";
 
 
 export class CreateOptionRequest {
@@ -10,5 +11,6 @@ export class CreateOptionRequest {
         description: "The title of the option",
         example: "Red",
     })
+    @IsString()
     title: string;
 }
