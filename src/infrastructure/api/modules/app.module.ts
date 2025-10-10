@@ -5,7 +5,7 @@ import { PollController } from "../controllers/poll.controller";
 import { CreatePollCommandHandler } from "src/application/command-handlers/create-poll/create-poll.command-handler";
 import { MongoPollRepository } from "src/infrastructure/adapters/repositories/poll/mongo-poll-repository";
 import mongoose, { Model } from "mongoose";
-import { MongoPoll, MongoPollSchema } from "src/infrastructure/schemas/poll.schema";
+import { MongoPollSchema } from "src/infrastructure/schemas/poll.schema";
 import { MongoIdGenerator } from "src/infrastructure/adapters/id-generator/mongo-id-generator";
 
 @Module({

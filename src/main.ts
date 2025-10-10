@@ -2,12 +2,14 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './infrastructure/api/modules/app.module';
 import { configureSwagger } from './infrastructure/api/documentation/configure-swagger';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter(),
   );
+  app.useGlobalPipes(new ValidationPipe());
 
   configureSwagger(app);
 

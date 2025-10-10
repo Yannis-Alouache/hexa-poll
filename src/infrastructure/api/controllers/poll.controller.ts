@@ -1,12 +1,12 @@
 import { Body, Controller, Delete, Post } from "@nestjs/common";
-import { CreatePollRequest } from "../dto/requests/create-poll.request";
-import { CreatePollCommand } from "src/domain/ports/in/commands/create-poll.command";
+import { CreatePollRequest } from "../dtos/requests/create-poll.request";
+import { CreatePollCommand } from "../../../domain/ports/in/commands/create-poll.command";
 import { CommandBus } from "@nestjs/cqrs";
-import { DeletePollCommand } from "src/domain/ports/in/commands/delete-poll.command";
-import { UpdatePollCommand } from "src/domain/ports/in/commands/update-poll.command";
-import { UpdatePollResponse } from "../dto/responses/update-poll.response";
-import { UpdatePollRequest } from "../dto/requests/update-poll.request";
-import { DeletePollRequest } from "../dto/requests/delete-poll.request";
+import { DeletePollCommand } from "../../../domain/ports/in/commands/delete-poll.command";
+import { UpdatePollCommand } from "../../../domain/ports/in/commands/update-poll.command";
+import { UpdatePollResponse } from "../dtos/responses/update-poll.response";
+import { UpdatePollRequest } from "../dtos/requests/update-poll.request";
+import { DeletePollRequest } from "../dtos/requests/delete-poll.request";
 
 
 @Controller("api/polls")
@@ -17,8 +17,9 @@ export class PollController {
 
     @Post()
     async createPoll(@Body() createPollRequest: CreatePollRequest): Promise<string> {
+        console.log(createPollRequest);
         return this.commandBus.execute(
-            new CreatePollCommand(createPollRequest.question, createPollRequest.options)
+            new CreatePollCommand(createPollRequest.question, createPollRequest.options, createPollRequest.startDate, createPollRequest.endDate)
         );
     }
 
