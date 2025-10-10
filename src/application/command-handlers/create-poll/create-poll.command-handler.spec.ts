@@ -2,8 +2,7 @@ import { CreatePollCommand } from "../../../domain/ports/in/commands/create-poll
 import { CreatePollCommandHandler } from "./create-poll.command-handler";
 import { InMemoryPollRepository } from "../../../infrastructure/adapters/repositories/poll/in-memory-poll-repository";
 import { InMemoryIdGenerator } from "../../../infrastructure/adapters/id-generator/in-memory-id-generator";
-import { StartDateAfterEndDateError } from "../../../domain/errors/start-date-after-end-date.error";
-import { StartDateInThePastError } from "../../../domain/errors/start-date-in-the-past.error";
+import { StartDateAfterEndDateException, StartDateInThePastException } from "../../../domain/errors";
 import { Poll } from "../../../domain/models/poll/poll";
 
 
@@ -74,10 +73,10 @@ describe('Create A Poll', () => {
     });
 
     it('throws an error if the start date is after the end date', async () => {
-        await expect(execute(startDateAfterEndDateCommand)).rejects.toThrow(StartDateAfterEndDateError);
+        await expect(execute(startDateAfterEndDateCommand)).rejects.toThrow(StartDateAfterEndDateException);
     });
 
     it('throws an error if the start date is in the past', async () => {
-        await expect(execute(startDateInThePastCommand)).rejects.toThrow(StartDateInThePastError);
+        await expect(execute(startDateInThePastCommand)).rejects.toThrow(StartDateInThePastException);
     });
 });
