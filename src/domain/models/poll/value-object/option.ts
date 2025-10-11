@@ -16,4 +16,11 @@ export class Option {
         this.id = props.id;
         this.title = props.title;
     }
+
+    get data() {
+        return {
+            id: this.id,
+            title: this.title,
+        };
+    }
 }

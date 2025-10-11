@@ -43,4 +43,14 @@ export class Poll {
     static create(props: PollCreationProps): Poll {
         return new Poll(props);
     }
+
+    public get data() {
+        return {
+            id: this.id,
+            question: this.question,
+            options: this.options.map(option => option.data),
+            startDate: this.dates.startDate,
+            endDate: this.dates.endDate,
+        };
+    }
 }
