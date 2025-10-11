@@ -6,8 +6,8 @@ interface PollDatesCreationProps {
 }
 
 export class PollDates {
-    public readonly startDate: Date;
-    public readonly endDate: Date;
+    private startDate: Date;
+    private endDate: Date;
 
     constructor(props: PollDatesCreationProps) {
         if (this.isStartDateAfterEndDate(props)) throw new StartDateAfterEndDateException();
@@ -23,5 +23,12 @@ export class PollDates {
 
     private isStartDateInThePast(props: PollDatesCreationProps) {
         return new Date(props.startDate).getTime() < new Date().getTime();
+    }
+
+    get data() {
+        return {
+            startDate: this.startDate,
+            endDate: this.endDate,
+        };
     }
 }

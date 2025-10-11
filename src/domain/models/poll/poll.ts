@@ -44,13 +44,13 @@ export class Poll {
         return new Poll(props);
     }
 
-    public get data() {
+    public toPersistence() {
         return {
-            id: this.id,
+            _id: this.id,
             question: this.question,
-            options: this.options.map(option => option.data),
+            options: this.options.map(option => option.toPersistence()),
             startDate: this.dates.startDate,
             endDate: this.dates.endDate,
-        };
+        }
     }
 }

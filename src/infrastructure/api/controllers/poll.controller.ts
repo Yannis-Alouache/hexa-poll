@@ -17,7 +17,6 @@ export class PollController {
 
     @Post()
     async createPoll(@Body() createPollRequest: CreatePollRequest): Promise<string> {
-        console.log(createPollRequest);
         return this.commandBus.execute(
             new CreatePollCommand(createPollRequest.question, createPollRequest.options, createPollRequest.startDate, createPollRequest.endDate)
         );
