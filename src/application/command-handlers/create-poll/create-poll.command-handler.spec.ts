@@ -4,6 +4,7 @@ import { InMemoryPollRepository } from "../../../infrastructure/adapters/reposit
 import { InMemoryIdGenerator } from "../../../infrastructure/adapters/id-generator/in-memory-id-generator";
 import { StartDateAfterEndDateException, StartDateInThePastException } from "../../../domain/errors";
 import { Poll } from "../../../domain/models/poll/poll";
+import { CreatePollResponse } from "../../../infrastructure/api/dtos/responses/create-poll.response";
 
 
 describe('Create A Poll', () => {
@@ -15,7 +16,7 @@ describe('Create A Poll', () => {
         idGenerator = new InMemoryIdGenerator();
     })
 
-    async function execute(command: CreatePollCommand): Promise<string> {
+    async function execute(command: CreatePollCommand): Promise<CreatePollResponse> {
         const commandHandler = new CreatePollCommandHandler(pollRepository, idGenerator);
         return commandHandler.execute(command);
     }
