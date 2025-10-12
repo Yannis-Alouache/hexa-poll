@@ -7,6 +7,7 @@ import { UpdatePollCommand } from "../../../domain/ports/in/commands/update-poll
 import { UpdatePollResponse } from "../dtos/responses/update-poll.response";
 import { UpdatePollRequest } from "../dtos/requests/update-poll.request";
 import { DeletePollRequest } from "../dtos/requests/delete-poll.request";
+import { CreatePollResponse } from "../dtos/responses/create-poll.response";
 
 
 @Controller("api/polls")
@@ -16,8 +17,8 @@ export class PollController {
     ) {}
 
     @Post()
-    async createPoll(@Body() createPollRequest: CreatePollRequest): Promise<string> {
-        return this.commandBus.execute(
+    async createPoll(@Body() createPollRequest: CreatePollRequest): Promise<CreatePollResponse> {
+        return await this.commandBus.execute(
             new CreatePollCommand(createPollRequest.question, createPollRequest.options, createPollRequest.startDate, createPollRequest.endDate)
         );
     }

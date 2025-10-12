@@ -17,13 +17,11 @@ describe('Create A Poll', () => {
         const result = await request(app.getHttpServer()).post('/api/polls').send({
             question: "What is your favorite color ?",
             options: [{ title: "Red" }, { title: "Blue" }],
-            startDate: "2023-01-01T00:00:00.000Z",
-            endDate: "2023-01-02T00:00:00.000Z",
+            startDate: new Date(Date.now() + 24 * 60 * 60 * 1000),
+            endDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
         });
-        console.log(result.body);
 
         expect(result.status).toBe(201);
-        expect(result.body).toEqual(expect.any(String));
+        expect(result.body.id).toEqual(expect.any(String));
     });
-
-});
+}); 
