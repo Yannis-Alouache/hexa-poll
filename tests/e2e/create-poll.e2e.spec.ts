@@ -20,8 +20,10 @@ describe('Create A Poll', () => {
             startDate: "2023-01-01T00:00:00.000Z",
             endDate: "2023-01-02T00:00:00.000Z",
         });
-        console.log("test");
+        console.log(result.body);
+
         expect(result.status).toBe(201);
         expect(result.body).toEqual(expect.any(String));
     });
+
 });

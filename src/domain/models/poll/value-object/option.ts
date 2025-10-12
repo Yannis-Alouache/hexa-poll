@@ -17,10 +17,10 @@ export class Option {
         this.title = props.title;
     }
 
-    get data() {
+    toPersistence() {
         return {
             id: this.id,
             title: this.title,
-        };
+        }
     }
 }

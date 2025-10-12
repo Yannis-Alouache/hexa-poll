@@ -45,12 +45,14 @@ export class Poll {
     }
 
     public toPersistence() {
+        const dates = this.dates.toPersistence();
+
         return {
             _id: this.id,
             question: this.question,
             options: this.options.map(option => option.toPersistence()),
-            startDate: this.dates.startDate,
-            endDate: this.dates.endDate,
+            startDate: dates.startDate,
+            endDate: dates.endDate,
         }
     }
 }

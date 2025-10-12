@@ -2,7 +2,8 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { HydratedDocument, SchemaType, SchemaTypes } from "mongoose";
 
 export type MongoPollDocument = HydratedDocument<MongoPoll>;
-@Schema()
+
+@Schema({ collection: 'polls' })
 export class MongoPoll {
     @Prop()
     _id: string;
@@ -21,7 +22,9 @@ export class MongoPoll {
 
     @Prop()
     endDate: Date;
+
+    @Prop({ default: Date.now })
+    createdAt: Date;
 }
 
 export const MongoPollSchema = SchemaFactory.createForClass(MongoPoll);
-

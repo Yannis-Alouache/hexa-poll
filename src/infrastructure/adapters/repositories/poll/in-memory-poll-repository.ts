@@ -5,12 +5,12 @@ export class InMemoryPollRepository implements PollRepository {
     private database: Poll[] = [];
 
     async save(poll: Poll): Promise<void> {
-        if (this.database.find(p => p.data.id === poll.data.id)) {
-            const index = this.database.findIndex(p => p.data.id === poll.data.id);
-            this.database[index] = poll;
-        } else {
+        const index = this.database.findIndex(p => p.toPersistence()._id === poll.toPersistence()._id);
+
+        if (index === -1)
             this.database.push(poll);
-        }
+        else
+            this.database[index] = poll;
     }
 
     update(poll: Poll): Promise<Poll> {

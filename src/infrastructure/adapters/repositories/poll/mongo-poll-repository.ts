@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Collection, Model } from "mongoose";
+import { Model } from "mongoose";
 import { Poll } from "../../../../domain/models/poll/poll";
 import { PollRepository } from "../../../../domain/ports/out/repositories/poll-repository";
 import { MongoPoll } from "../../../schemas/poll.schema";
@@ -14,11 +14,8 @@ export class MongoPollRepository implements PollRepository {
     ) {}
 
     async save(poll: Poll): Promise<void> {
-        console.log(poll.toPersistence());
         const test = new this.pollModel(poll.toPersistence());
-        
-        console.log(test);
-        test.save();
+        await test.save();
     }
     update(poll: Poll): Promise<Poll> {
         throw new Error("Method not implemented.");

@@ -25,10 +25,10 @@ export class PollDates {
         return new Date(props.startDate).getTime() < new Date().getTime();
     }
 
-    get data() {
+    toPersistence() {
         return {
             startDate: this.startDate,
             endDate: this.endDate,
-        };
+        }
     }
 }
