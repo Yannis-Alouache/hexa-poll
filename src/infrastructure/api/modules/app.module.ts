@@ -6,6 +6,7 @@ import { CreatePollCommandHandler } from "src/application/command-handlers/creat
 import { MongoPollRepository } from "src/infrastructure/adapters/repositories/poll/mongo-poll-repository";
 import { MongoPoll, MongoPollSchema } from "src/infrastructure/schemas/poll.schema";
 import { MongoIdGenerator } from "src/infrastructure/adapters/id-generator/mongo-id-generator";
+import { DeletePollCommandHandler } from "src/application/command-handlers/delete-poll/delete-poll.command-handler";
 
 @Module({
     imports: [
@@ -17,6 +18,7 @@ import { MongoIdGenerator } from "src/infrastructure/adapters/id-generator/mongo
     providers: [
         // COMMAND HANDLERS
         CreatePollCommandHandler,
+        DeletePollCommandHandler,
 
 
         // QUERY HANDLERS

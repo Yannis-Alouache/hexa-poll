@@ -1,0 +1,15 @@
+meta {
+  name: Delete Poll
+  type: http
+  seq: 2
+}
+
+delete {
+  url: {{url}}/api/polls
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}
