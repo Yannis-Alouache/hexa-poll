@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Param, Post } from "@nestjs/common";
 import { CreatePollRequest } from "../dtos/requests/create-poll.request";
 import { CreatePollCommand } from "../../../domain/ports/in/commands/create-poll.command";
 import { CommandBus } from "@nestjs/cqrs";
@@ -6,8 +6,8 @@ import { DeletePollCommand } from "../../../domain/ports/in/commands/delete-poll
 import { UpdatePollCommand } from "../../../domain/ports/in/commands/update-poll.command";
 import { UpdatePollResponse } from "../dtos/responses/update-poll.response";
 import { UpdatePollRequest } from "../dtos/requests/update-poll.request";
-import { DeletePollRequest } from "../dtos/requests/delete-poll.request";
 import { CreatePollResponse } from "../dtos/responses/create-poll.response";
+import { plainToInstance } from "class-transformer";
 
 
 @Controller("api/polls")
@@ -17,23 +17,25 @@ export class PollController {
     ) {}
 
     @Post()
-    async createPoll(@Body() createPollRequest: CreatePollRequest): Promise<CreatePollResponse> {
-        return await this.commandBus.execute(
-            new CreatePollCommand(createPollRequest.question, createPollRequest.options, createPollRequest.startDate, createPollRequest.endDate)
+    async createPoll(@Body() request: CreatePollRequest): Promise<CreatePollResponse> {
+        const poll = await this.commandBus.execute(
+            new CreatePollCommand(request.question, request.options, request.startDate, request.endDate)
         );
+
+        return new CreatePollResponse(poll.data.id);
     }
 
     @Post("/update")
-    async updatePoll(@Body() updatePollRequest: UpdatePollRequest): Promise<UpdatePollResponse> {
-        return this.commandBus.execute(
-            new UpdatePollCommand(updatePollRequest.question, updatePollRequest.options)
+    async updatePoll(@Body() request: UpdatePollRequest): Promise<UpdatePollResponse> {
+        const poll = await this.commandBus.execute(
+            new UpdatePollCommand(request.id, request.question, request.options, request.startDate, request.endDate)
         );
+
+        return plainToInstance(UpdatePollResponse, poll);
     }
 
-    @Delete()
-    async deletePoll(@Body() deletePollRequest: DeletePollRequest): Promise<void> {
-        return this.commandBus.execute(
-            new DeletePollCommand(deletePollRequest.id)
-        );
+    @Delete(":id")
+    async deletePoll(@Param('id') id: string): Promise<void> {
+        return this.commandBus.execute(new DeletePollCommand(id));
     }
 }

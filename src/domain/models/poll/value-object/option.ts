@@ -23,4 +23,11 @@ export class Option {
             title: this.title,
         }
     }
+
+    get data() {
+        return {
+            id: this.id,
+            title: this.title,
+        }
+    }
 }

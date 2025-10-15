@@ -8,7 +8,7 @@ import { CreatePollResponse } from "../../../infrastructure/api/dtos/responses/c
 
 
 @CommandHandler(CreatePollCommand)
-export class CreatePollCommandHandler implements ICommandHandler<CreatePollCommand, CreatePollResponse> {
+export class CreatePollCommandHandler implements ICommandHandler<CreatePollCommand, Poll> {
 
     constructor(
         @Inject('PollRepository')
@@ -18,7 +18,7 @@ export class CreatePollCommandHandler implements ICommandHandler<CreatePollComma
         private readonly idGenerator: IdGenerator,
     ) {}
 
-    async execute(command: CreatePollCommand): Promise<CreatePollResponse> {
+    async execute(command: CreatePollCommand): Promise<Poll> {
         let pollId = this.idGenerator.generate();
         
         let poll = Poll.create({
@@ -34,6 +34,6 @@ export class CreatePollCommandHandler implements ICommandHandler<CreatePollComma
 
         await this.pollRepository.save(poll);
 
-        return new CreatePollResponse(pollId);
+        return poll;
     }
 }

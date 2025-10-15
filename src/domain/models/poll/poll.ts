@@ -19,7 +19,6 @@ import { PollDates } from "./value-object/poll-date";
 //     "endDate": "2025-10-31T12:00:00.000Z",
 // }
 
-
 export interface PollCreationProps {
     id: string;
     question: string;
@@ -27,6 +26,7 @@ export interface PollCreationProps {
     startDate: Date;
     endDate: Date;
 }
+
 export class Poll {
     private id: string;
     private question: string;
@@ -53,6 +53,18 @@ export class Poll {
             options: this.options.map(option => option.toPersistence()),
             startDate: dates.startDate,
             endDate: dates.endDate,
+        }
+    }
+
+    public get data() {
+        const { startDate, endDate } = this.dates.data;
+        
+        return {
+            id: this.id,
+            question: this.question,
+            options: this.options.map(option => option.data),
+            startDate: startDate,
+            endDate: endDate,
         }
     }
 }

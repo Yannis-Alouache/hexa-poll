@@ -31,4 +31,11 @@ export class PollDates {
             endDate: this.endDate,
         }
     }
+
+    get data() {
+        return {
+            startDate: this.startDate,
+            endDate: this.endDate,
+        }
+    }
 }

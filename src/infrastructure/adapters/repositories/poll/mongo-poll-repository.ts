@@ -14,15 +14,19 @@ export class MongoPollRepository implements PollRepository {
     ) {}
 
     async save(poll: Poll): Promise<void> {
-        const test = new this.pollModel(poll.toPersistence());
-        await test.save();
+        const pollPersistance = new this.pollModel(poll.toPersistence());
+        await pollPersistance.save();
     }
+
     update(poll: Poll): Promise<Poll> {
         throw new Error("Method not implemented.");
     }
-    delete(id: string): Promise<void> {
-        throw new Error("Method not implemented.");
+
+    async delete(id: string): Promise<void> {
+        const poll = this.pollModel.findById(id);
+        await poll.deleteOne();
     }
+
     findById(id: string): Promise<Poll> {
         throw new Error("Method not implemented.");
     }

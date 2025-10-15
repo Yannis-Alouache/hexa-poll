@@ -10,6 +10,7 @@ describe('Create A Poll', () => {
     });
 
     afterAll(async () => {
+        await app.clearDatabase();
         await app.close();
     });
 

@@ -1,14 +1,16 @@
 import { INestApplication, ValidationPipe } from "@nestjs/common";
-import { FastifyAdapter, NestFastifyApplication } from "@nestjs/platform-fastify";
 import { Test } from "@nestjs/testing";
 import { CreatePollCommandHandler } from "../../src/application/command-handlers/create-poll/create-poll.command-handler";
 import { PollController } from "../../src/infrastructure/api/controllers/poll.controller";
 import { MongoPollRepository } from "../../src/infrastructure/adapters/repositories/poll/mongo-poll-repository";
-import mongoose from "mongoose";
 import { MongoPoll, MongoPollSchema } from "../../src/infrastructure/schemas/poll.schema";
 import { MongoIdGenerator } from "../../src/infrastructure/adapters/id-generator/mongo-id-generator";
 import { CqrsModule } from "@nestjs/cqrs";
-import { MongooseModule } from "@nestjs/mongoose";
+import { getModelToken, MongooseModule } from "@nestjs/mongoose";
+import { DeletePollCommandHandler } from "../../src/application/command-handlers/delete-poll/delete-poll.command-handler";
+import { PollRepository } from "../../src/domain/ports/out/repositories/poll-repository";
+import { Poll, PollCreationProps } from "../../src/domain/models/poll/poll";
+
 
 
 export class TestApp {
@@ -25,6 +27,7 @@ export class TestApp {
             providers: [
                 // COMMAND HANDLERS
                 CreatePollCommandHandler,
+                DeletePollCommandHandler,
         
                 // QUERY HANDLERS
         
@@ -64,5 +67,17 @@ export class TestApp {
 
     getHttpServer() {
         return this.app.getHttpServer();
+    }
+
+    // Méthodes pour les fixtures
+    async loadFixture(pollSeed: PollCreationProps): Promise<void> {
+        const repository = this.get<PollRepository>('PollRepository');
+        const poll = Poll.create(pollSeed);
+        await repository.save(poll);
+    }
+
+    async clearDatabase(): Promise<void> {
+        const pollModel = this.app.get(getModelToken(MongoPoll.name));
+        await pollModel.deleteMany({});
     }
 }
