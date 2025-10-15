@@ -31,6 +31,7 @@ export class CreatePollRequest {
             { title: "Blue" },
         ],
     })
+    @Type(() => CreateOptionRequest)
     @IsArray()
     @ArrayNotEmpty()
     options: CreateOptionRequest[];
