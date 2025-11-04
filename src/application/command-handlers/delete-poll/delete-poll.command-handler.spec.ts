@@ -2,6 +2,10 @@ import { InMemoryPollRepository } from "../../../infrastructure/adapters/reposit
 import { DeletePollCommand } from "../../../domain/ports/in/commands/delete-poll.command";
 import { DeletePollCommandHandler } from "./delete-poll.command-handler";
 import { Poll } from "../../../domain/models/poll/poll";
+import { CreatePollCommand } from "src/domain/ports/in/commands/create-poll.command";
+import { CreatePollCommandHandler } from "../create-poll/create-poll.command-handler";
+import { InMemoryIdGenerator } from "../../../infrastructure/adapters/id-generator/in-memory-id-generator";
+import { CreatePollFixtures } from "../../../../tests/shared/create-poll-fixtures";
 
 
 describe('Delete A Poll', () => {
@@ -9,35 +13,25 @@ describe('Delete A Poll', () => {
 
     beforeEach(() => {
         pollRepository = new InMemoryPollRepository();
+        saveCampaign(CreatePollFixtures.validCommand());
     })
 
-    async function execute(command: DeletePollCommand): Promise<void> {
-        const commandHandler = new DeletePollCommandHandler(pollRepository);
-        return commandHandler.execute(command);
-    }
-
-    it('delete a poll', async () => {
-        pollRepository.save(Poll.create({
-            id: "1",
-            question: "What is your favorite color ?",
-            options: [
-                {
-                    id: "1",
-                    title: "Red"
-                },
-                {
-                    id: "1",
-                    title: "Blue"
-                }
-            ],
-            startDate: new Date(Date.now() + 24 * 60 * 60 * 1000),
-            endDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
-        }))
-
+    it('delete a poll successfully', async () => {
         const command = new DeletePollCommand("1");
         await execute(command);
 
         const polls = await pollRepository.findAll();
         expect(polls.length).toBe(0);
     });
+
+
+    async function execute(command: DeletePollCommand): Promise<void> {
+        const commandHandler = new DeletePollCommandHandler(pollRepository);
+        return commandHandler.execute(command);
+    }
+
+    async function saveCampaign(command: CreatePollCommand): Promise<void> {
+        const commandHandler = new CreatePollCommandHandler(pollRepository, new InMemoryIdGenerator());
+        commandHandler.execute(command);
+    }
 });

@@ -4,10 +4,12 @@ import { Model } from "mongoose";
 import { Poll } from "../../../../domain/models/poll/poll";
 import { PollRepository } from "../../../../domain/ports/out/repositories/poll-repository";
 import { MongoPoll } from "../../../schemas/poll.schema";
+import { PollNotFoundException } from "../../../../domain/errors/poll-not-found.exception";
+import { PollMapper } from "../../../mappers/poll-mapper";
 
 @Injectable()
 export class MongoPollRepository implements PollRepository {
-
+ 
     constructor(
         @InjectModel(MongoPoll.name)
         private readonly pollModel: Model<MongoPoll>
@@ -18,18 +20,31 @@ export class MongoPollRepository implements PollRepository {
         await pollPersistance.save();
     }
 
-    update(poll: Poll): Promise<Poll> {
-        throw new Error("Method not implemented.");
+    async update(poll: Poll): Promise<Poll> { // TODO: Mettre à jour les options
+        const pollPersistance = await this.pollModel.findByIdAndUpdate(poll.toPersistence()._id, {
+            question: poll.toPersistence().question,
+            options: poll.toPersistence().options,
+            startDate: poll.toPersistence().startDate,
+            endDate: poll.toPersistence().endDate,
+        }, { new: true });
+
+        if (!pollPersistance) throw new PollNotFoundException();
+        return PollMapper.toDomain(pollPersistance);
     }
+
 
     async delete(id: string): Promise<void> {
         const poll = this.pollModel.findById(id);
         await poll.deleteOne();
     }
 
-    findById(id: string): Promise<Poll> {
-        throw new Error("Method not implemented.");
+    async findById(id: string): Promise<Poll> {
+        const poll = await this.pollModel.findById(id);
+        if (!poll) throw new PollNotFoundException();
+
+        return PollMapper.toDomain(poll);
     }
+
     findAll(): Promise<Poll[]> {
         throw new Error("Method not implemented.");
     }

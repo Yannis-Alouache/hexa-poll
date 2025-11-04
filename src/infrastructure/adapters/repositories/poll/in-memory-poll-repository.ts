@@ -13,17 +13,20 @@ export class InMemoryPollRepository implements PollRepository {
             this.database[index] = poll;
     }
 
-    update(poll: Poll): Promise<Poll> {
+    async update(poll: Poll): Promise<Poll> {
         throw new Error("Method not implemented.");
     }
 
-    delete(id: string): Promise<void> {
+    async delete(id: string): Promise<void> {
         this.database = this.database.filter(p => p.toPersistence()._id !== id);
-        return Promise.resolve();
+        return;
     }
 
-    findById(id: string): Promise<Poll> {
-        throw new Error("Method not implemented.");
+    async findById(id: string): Promise<Poll> {
+        const poll = this.database.find(p => p.toPersistence()._id === id);
+        if (!poll)
+            throw new Error("Poll not found");
+        return poll;
     }
 
     async findAll(): Promise<Poll[]> {

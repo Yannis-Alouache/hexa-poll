@@ -70,10 +70,12 @@ export class TestApp {
     }
 
     // Méthodes pour les fixtures
-    async loadFixture(pollSeed: PollCreationProps): Promise<void> {
+    async loadFixture(polls: PollCreationProps[]): Promise<void> {
         const repository = this.get<PollRepository>('PollRepository');
-        const poll = Poll.create(pollSeed);
-        await repository.save(poll);
+        
+        polls.forEach(async poll => {
+            await repository.save(Poll.create(poll));
+        });
     }
 
     async clearDatabase(): Promise<void> {

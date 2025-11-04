@@ -1,10 +1,13 @@
 import { Command } from "@nestjs/cqrs";
-import { PollEntity } from "src/infrastructure/persistence-models/poll-entity";
+import { Poll } from "src/domain/models/poll/poll";
 
-export class UpdatePollCommand extends Command<PollEntity> {
+export class UpdatePollCommand extends Command<Poll> {
     constructor(
+        public readonly id: string,
         public readonly question: string,
-        public readonly options: { title: string }[],
+        public readonly options: { id: string, title: string }[],
+        public readonly startDate: Date,
+        public readonly endDate: Date
     ) {
         super();
     }

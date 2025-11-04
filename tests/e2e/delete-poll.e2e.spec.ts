@@ -8,7 +8,7 @@ describe('Delete A Poll', () => {
     beforeAll(async () => {
         app = new TestApp();
         await app.setup();
-        await app.loadFixture(basicPollSeed);
+        await app.loadFixture([basicPollSeed]);
     });
 
     afterAll(async () => {
@@ -29,4 +29,4 @@ describe('Delete A Poll', () => {
 
         expect(result.status).toBe(200);
     });
-});  
+});

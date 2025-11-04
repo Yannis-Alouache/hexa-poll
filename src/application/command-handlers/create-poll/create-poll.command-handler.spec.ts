@@ -4,7 +4,8 @@ import { InMemoryPollRepository } from "../../../infrastructure/adapters/reposit
 import { InMemoryIdGenerator } from "../../../infrastructure/adapters/id-generator/in-memory-id-generator";
 import { StartDateAfterEndDateException, StartDateInThePastException } from "../../../domain/errors";
 import { Poll } from "../../../domain/models/poll/poll";
-import { CreatePollResponse } from "../../../infrastructure/api/dtos/responses/create-poll.response";
+import { CreatePollFixtures } from "../../../../tests/shared/create-poll-fixtures";
+import { tomorrow, twoDaysFromNow } from "../../../../tests/shared/dates.fixture";
 
 
 describe('Create A Poll', () => {
@@ -14,56 +15,16 @@ describe('Create A Poll', () => {
     beforeEach(() => {
         pollRepository = new InMemoryPollRepository();
         idGenerator = new InMemoryIdGenerator();
-    })
-
-    async function execute(command: CreatePollCommand): Promise<CreatePollResponse> {
-        const commandHandler = new CreatePollCommandHandler(pollRepository, idGenerator);
-        return commandHandler.execute(command);
-    }
-
-    const tommorow = new Date(Date.now() + 24 * 60 * 60 * 1000);
-    const twoDaysFromNow = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
-    const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000);
-
-    const validCommand = new CreatePollCommand(
-        "What is your favorite color ?",
-        [{ title: "Red" }, { title: "Blue" }],
-        tommorow,
-        twoDaysFromNow,
-    );
-
-    const startDateInThePastCommand = new CreatePollCommand(
-        "What is your favorite color ?",
-        [{ title: "Red" }, { title: "Blue" }],
-        yesterday,
-        tommorow,
-    );
-
-    const startDateAfterEndDateCommand = new CreatePollCommand(
-        "What is your favorite color ?",
-        [{ title: "Red" }, { title: "Blue" }],
-        tommorow,
-        yesterday,
-    );
-
+    }) 
 
     it('creates a poll with mandatory fields', async () => {
-        await execute(validCommand);
+        await execute(CreatePollFixtures.validCommand());
 
         const expectedPoll = Poll.create({
             id: "1",
             question: "What is your favorite color ?",
-            options: [
-                {
-                    id: "1",
-                    title: "Red"
-                },
-                {
-                    id: "1",
-                    title: "Blue"
-                }
-            ],
-            startDate: tommorow,
+            options: [{ id: "1", title: "Red" }, { id: "1", title: "Blue" }],
+            startDate: tomorrow,
             endDate: twoDaysFromNow,
         });
 
@@ -74,10 +35,15 @@ describe('Create A Poll', () => {
     });
 
     it('throws an error if the start date is after the end date', async () => {
-        await expect(execute(startDateAfterEndDateCommand)).rejects.toThrow(StartDateAfterEndDateException);
+        await expect(execute(CreatePollFixtures.startDateAfterEndDateCommand())).rejects.toThrow(StartDateAfterEndDateException);
     });
 
     it('throws an error if the start date is in the past', async () => {
-        await expect(execute(startDateInThePastCommand)).rejects.toThrow(StartDateInThePastException);
+        await expect(execute(CreatePollFixtures.startDateInThePastCommand())).rejects.toThrow(StartDateInThePastException);
     });
+
+    async function execute(command: CreatePollCommand): Promise<Poll> {
+        const commandHandler = new CreatePollCommandHandler(pollRepository, idGenerator);
+        return commandHandler.execute(command);
+    }
 });

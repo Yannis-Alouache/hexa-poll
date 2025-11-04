@@ -1,13 +1,13 @@
 meta {
-  name: Create Poll
+  name: Update Poll
   type: http
-  seq: 2
+  seq: 3
 }
 
-post {
-  url: {{url}}/api/polls
+put {
+  url: {{url}}/api/polls/68f69d9a07815af2e30ec1
   body: json
-  auth: none
+  auth: inherit
 }
 
 body:json {
@@ -24,4 +24,9 @@ body:json {
     "startDate": "2025-10-20T23:00:00.000Z",
     "endDate": "2025-10-21T23:50:00.000Z"
   }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
 }

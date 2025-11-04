@@ -1,11 +1,29 @@
+import { Inject } from "@nestjs/common";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
-import { Poll } from "src/domain/models/poll/poll";
-import { UpdatePollCommand } from "src/domain/ports/in/commands/update-poll.command";
-import { PollEntity } from "src/infrastructure/persistence-models/poll-entity";
+import { Poll } from "../../../domain/models/poll/poll";
+import { UpdatePollCommand } from "../../../domain/ports/in/commands/update-poll.command";
+import type { PollRepository } from "../../../domain/ports/out/repositories/poll-repository";
 
 @CommandHandler(UpdatePollCommand)
 export class UpdatePollCommandHandler implements ICommandHandler<UpdatePollCommand, Poll> {
-    execute(command: UpdatePollCommand): Promise<PollEntity> {
-        throw new Error("Method not implemented.");
+
+    constructor(
+        @Inject('PollRepository')
+        private readonly pollRepository: PollRepository
+    ) {}
+    
+    async execute(command: UpdatePollCommand): Promise<Poll> {
+        
+        let poll = Poll.create({
+            id: command.id,
+            question: command.question,
+            options: command.options,
+            startDate: command.startDate,
+            endDate: command.endDate,
+        });
+
+        await this.pollRepository.save(poll);
+
+        return poll;
     }
 }

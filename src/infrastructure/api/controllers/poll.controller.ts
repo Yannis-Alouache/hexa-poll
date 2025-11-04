@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Param, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Param, Post, Put } from "@nestjs/common";
 import { CreatePollRequest } from "../dtos/requests/create-poll.request";
 import { CreatePollCommand } from "../../../domain/ports/in/commands/create-poll.command";
 import { CommandBus } from "@nestjs/cqrs";
@@ -25,13 +25,14 @@ export class PollController {
         return new CreatePollResponse(poll.data.id);
     }
 
-    @Post("/update")
-    async updatePoll(@Body() request: UpdatePollRequest): Promise<UpdatePollResponse> {
+    @Put(":id")
+    async updatePoll(@Param('id') id: string, @Body() request: UpdatePollRequest): Promise<UpdatePollResponse> {
         const poll = await this.commandBus.execute(
-            new UpdatePollCommand(request.id, request.question, request.options, request.startDate, request.endDate)
+            new UpdatePollCommand(id, request.question, request.options, request.startDate, request.endDate)
         );
 
         return plainToInstance(UpdatePollResponse, poll);
+        //return plainToInstance(UpdatePollResponse, poll);
     }
 
     @Delete(":id")
