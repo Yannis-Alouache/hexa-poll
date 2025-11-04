@@ -20,13 +20,15 @@ export class MongoPollRepository implements PollRepository {
         await pollPersistance.save();
     }
 
-    async update(poll: Poll): Promise<Poll> { // TODO: Mettre à jour les options
-        const pollPersistance = await this.pollModel.findByIdAndUpdate(poll.toPersistence()._id, {
-            question: poll.toPersistence().question,
-            options: poll.toPersistence().options,
-            startDate: poll.toPersistence().startDate,
-            endDate: poll.toPersistence().endDate,
-        }, { new: true });
+    async update(poll: Poll): Promise<Poll> {
+        const pollData = poll.toPersistence();
+        const pollPersistance = await this.pollModel.findByIdAndUpdate(
+            pollData._id,
+            pollData,
+            { new: true }
+        );
+        console.log(poll);
+        console.log(pollPersistance);
 
         if (!pollPersistance) throw new PollNotFoundException();
         return PollMapper.toDomain(pollPersistance);

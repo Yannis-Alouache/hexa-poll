@@ -13,7 +13,7 @@ export class UpdatePollCommandHandler implements ICommandHandler<UpdatePollComma
     ) {}
     
     async execute(command: UpdatePollCommand): Promise<Poll> {
-        
+
         let poll = Poll.create({
             id: command.id,
             question: command.question,
@@ -22,8 +22,6 @@ export class UpdatePollCommandHandler implements ICommandHandler<UpdatePollComma
             endDate: command.endDate,
         });
 
-        await this.pollRepository.save(poll);
-
-        return poll;
+        return await this.pollRepository.update(poll);
     }
 }

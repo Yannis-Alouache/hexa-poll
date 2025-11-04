@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { ArrayNotEmpty, IsArray, IsDate, IsNotEmpty, IsString } from "class-validator";
+import { ArrayNotEmpty, IsArray, IsDate, IsNotEmpty, IsString, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
 import { UpdateOptionRequest } from "./update-option.request";
 
@@ -22,6 +22,8 @@ export class UpdatePollRequest {
     })
     @IsArray()
     @ArrayNotEmpty()
+    @ValidateNested({ each: true })
+    @Type(() => UpdateOptionRequest)
     options: UpdateOptionRequest[];
 
     @ApiProperty({

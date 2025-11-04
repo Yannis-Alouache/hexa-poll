@@ -24,7 +24,7 @@ export class PollMapper {
         mongoPoll._id = data._id;
         mongoPoll.question = data.question;
         mongoPoll.options = data.options.map(option => ({
-            _id: option.id,
+            _id: option._id,
             title: option.title
         }));
         mongoPoll.startDate = data.startDate;

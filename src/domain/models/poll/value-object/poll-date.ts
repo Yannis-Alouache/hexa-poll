@@ -22,7 +22,14 @@ export class PollDates {
     }
 
     private isStartDateInThePast(props: PollDatesCreationProps) {
-        return new Date(props.startDate).getTime() < new Date().getTime();
+        const startDate = new Date(props.startDate).getTime();
+        const now = new Date().getTime();
+        console.log('DEBUG: Start date timestamp:', startDate);
+        console.log('DEBUG: Current timestamp:', now);
+        console.log('DEBUG: Start date value:', new Date(props.startDate));
+        console.log('DEBUG: Current date value:', new Date());
+        console.log('DEBUG: Is start date in past?', startDate < now);
+        return startDate < now;
     }
 
     toPersistence() {

@@ -19,7 +19,7 @@ export class Option {
 
     toPersistence() {
         return {
-            id: this.id,
+            _id: this.id,
             title: this.title,
         }
     }

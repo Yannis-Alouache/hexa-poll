@@ -31,8 +31,7 @@ export class PollController {
             new UpdatePollCommand(id, request.question, request.options, request.startDate, request.endDate)
         );
 
-        return plainToInstance(UpdatePollResponse, poll);
-        //return plainToInstance(UpdatePollResponse, poll);
+        return plainToInstance(UpdatePollResponse, poll.data);
     }
 
     @Delete(":id")
