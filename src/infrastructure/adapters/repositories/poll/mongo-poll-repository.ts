@@ -27,8 +27,6 @@ export class MongoPollRepository implements PollRepository {
             pollData,
             { new: true }
         );
-        console.log(poll);
-        console.log(pollPersistance);
 
         if (!pollPersistance) throw new PollNotFoundException();
         return PollMapper.toDomain(pollPersistance);
