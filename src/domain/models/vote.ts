@@ -3,17 +3,17 @@
 // }
 
 export interface VoteCreationProps {
-    optionId: string;
+  optionId: string;
 }
 
 export class Vote {
-    optionId: string;
+  optionId: string;
 
-    private constructor(props: VoteCreationProps) {
-        this.optionId = props.optionId;
-    }
+  private constructor(props: VoteCreationProps) {
+    this.optionId = props.optionId;
+  }
 
-    static create(props: VoteCreationProps): Vote {
-        return new Vote(props);
-    }
+  static create(props: VoteCreationProps): Vote {
+    return new Vote(props);
+  }
 }

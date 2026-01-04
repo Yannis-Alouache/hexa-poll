@@ -4,30 +4,30 @@
 // }
 
 export interface OptionCreationProps {
-    id: string;
-    title: string;
+  id: string;
+  title: string;
 }
 
 export class Option {
-    public readonly id: string;
-    public readonly title: string;
+  public readonly id: string;
+  public readonly title: string;
 
-    constructor(props: OptionCreationProps) {
-        this.id = props.id;
-        this.title = props.title;
-    }
+  constructor(props: OptionCreationProps) {
+    this.id = props.id;
+    this.title = props.title;
+  }
 
-    toPersistence() {
-        return {
-            _id: this.id,
-            title: this.title,
-        }
-    }
+  toPersistence() {
+    return {
+      _id: this.id,
+      title: this.title,
+    };
+  }
 
-    get data() {
-        return {
-            id: this.id,
-            title: this.title,
-        }
-    }
+  get data() {
+    return {
+      id: this.id,
+      title: this.title,
+    };
+  }
 }

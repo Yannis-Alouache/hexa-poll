@@ -1,6 +1,5 @@
-import { Option, OptionCreationProps } from "./value-object/option";
-import { PollDates } from "./value-object/poll-date";
-
+import { Option, OptionCreationProps } from './value-object/option';
+import { PollDates } from './value-object/poll-date';
 
 // {
 //     "id": "123",
@@ -20,51 +19,54 @@ import { PollDates } from "./value-object/poll-date";
 // }
 
 export interface PollCreationProps {
-    id: string;
-    question: string;
-    options: OptionCreationProps[];
-    startDate: Date;
-    endDate: Date;
+  id: string;
+  question: string;
+  options: OptionCreationProps[];
+  startDate: Date;
+  endDate: Date;
 }
 
 export class Poll {
-    private id: string;
-    private question: string;
-    private options: Option[];
-    private dates: PollDates;
+  private id: string;
+  private question: string;
+  private options: Option[];
+  private dates: PollDates;
 
-    private constructor(props: PollCreationProps) {
-        this.id = props.id;
-        this.question = props.question;
-        this.options = props.options.map(option => new Option(option));
-        this.dates = new PollDates({ startDate: props.startDate, endDate: props.endDate });
-    }
+  private constructor(props: PollCreationProps) {
+    this.id = props.id;
+    this.question = props.question;
+    this.options = props.options.map((option) => new Option(option));
+    this.dates = new PollDates({
+      startDate: props.startDate,
+      endDate: props.endDate,
+    });
+  }
 
-    static create(props: PollCreationProps): Poll {
-        return new Poll(props);
-    }
+  static create(props: PollCreationProps): Poll {
+    return new Poll(props);
+  }
 
-    public toPersistence() {
-        const dates = this.dates.toPersistence();
+  public toPersistence() {
+    const dates = this.dates.toPersistence();
 
-        return {
-            _id: this.id,
-            question: this.question,
-            options: this.options.map(option => option.toPersistence()),
-            startDate: dates.startDate,
-            endDate: dates.endDate,
-        }
-    }
+    return {
+      _id: this.id,
+      question: this.question,
+      options: this.options.map((option) => option.toPersistence()),
+      startDate: dates.startDate,
+      endDate: dates.endDate,
+    };
+  }
 
-    public get data() {
-        const { startDate, endDate } = this.dates.data;
-        
-        return {
-            id: this.id,
-            question: this.question,
-            options: this.options.map(option => option.data),
-            startDate: startDate,
-            endDate: endDate,
-        }
-    }
+  public get data() {
+    const { startDate, endDate } = this.dates.data;
+
+    return {
+      id: this.id,
+      question: this.question,
+      options: this.options.map((option) => option.data),
+      startDate: startDate,
+      endDate: endDate,
+    };
+  }
 }
